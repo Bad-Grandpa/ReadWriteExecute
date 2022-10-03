@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1a78dd48-77f5-44f3-9c67-a8188edf58b3" name="Changes" comment="" />
+    <list default="true" id="1a78dd48-77f5-44f3-9c67-a8188edf58b3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/learnjapanese/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learnjapanese/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReadWriteExecute/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReadWriteExecute/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReadWriteExecute/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReadWriteExecute/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -14,12 +33,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2FdT5FbvwSDUFfuJ9eqzlR88UW5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true"
   }
@@ -45,5 +68,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
