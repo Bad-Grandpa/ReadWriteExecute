@@ -1,9 +1,9 @@
 {% extends "learnjapanese/base.html" %}
-<html lang="en">
-<head>
-   <title>Category {{category.name}}</title>
-</head>
-<body>
+
+{% block title %}
+<title>Category - {{category.category_name}}</title>
+{% endblock title %}
+
 {% block content %}
 You are on single category subpage!<br>
 This is category {{category.category_name}}<br>
@@ -19,7 +19,4 @@ This is category {{category.category_name}}<br>
 {% else %}
 There are no flashcards for this category
 {% endif %}
-
 {% endblock content %}
-</body>
-</html>
