@@ -11,9 +11,10 @@ This is category {{category.category_name}}<br>
 {% if flashcards_by_category %}
     <ul>
     {% for flashcard in flashcards_by_category %}
-        English: {{flashcard.english_text}}<br>
-        Japanese: {{flashcard.japanese_text}}<br>
-        ------------------------------------------------<br>
+        <div class="card bg-primary text-white text-center m-4 p-4" style="width:350px">
+            English: {{flashcard.english_text}}<br><br>
+            Japanese: {{flashcard.japanese_text}}
+        </div>
     {% endfor %}
     </ul>
 {% else %}

@@ -8,12 +8,13 @@
 You are on categories page!
 
 {% if category_list %}
-    <ul>
+<ul class="list-group" style="width:500px">
     {% for category in category_list %}
-        <li><a href="{% url 'learnjapanese:single_category' category.id %}">{{ category.category_name }}</a></li>
+    <li class="list-group-item bg-light text-white"><a href="{% url 'learnjapanese:single_category' category.id %}">
+        {{ category.category_name }}</a></li>
     {% endfor %}
-    </ul>
+</ul>
 {% else %}
-    <p>No categories are available.</p>
+<p>No categories are available.</p>
 {% endif %}
 {% endblock content %}
