@@ -1,4 +1,5 @@
 {% extends "learnjapanese/base.html" %}
+{% load static %}
 
 {% block title %}
 <title>Learn japanese - about</title>
@@ -6,5 +7,29 @@
 
 {% block content %}
 <h2>About</h2>
-Something about japanese by Seblis and Bad Grandpa
+<p>Site is designed to help you improve your japanese vocabulary, and maybe even your kanji recognition.
+    Hope you'll have fun with it!</p>
+
+<h3>Authors</h3>
+<div id="author_cards" class="container">
+    <div class="row">
+        <div id="seblis_card" class="card mx-3" style="width:400px">
+            <img class="card-img-top" src="{% static 'learnjapanese/avatar_seblis.jpg' %}" alt="Seblis image">
+            <div class="card-body">
+                <h4>Seblis</h4>
+                <p class="card-text">Something about Seblis</p>
+                <a href="https://www.linkedin.com/in/sebastian-lisiewski-4a479b106/" target="_blank" class="btn btn-primary">LinkedIn</a>
+            </div>
+        </div>
+        <div id="bad_grandpa_card" class="card mx-3" style="width:400px">
+            <img class="card-img-top" src="{% static 'learnjapanese/avatar_bad_grandpa.jpg' %}" alt="Bad Grandpa image">
+            <div class="card-body">
+                <h4>Bad Grandpa</h4>
+                <p class="card-text">Something about Bad grandpa</p>
+                <a href="https://www.linkedin.com/" target="_blank" class="btn btn-primary">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
