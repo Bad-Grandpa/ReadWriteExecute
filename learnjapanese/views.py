@@ -4,6 +4,7 @@ from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from .models import Category, FlashCard
 
+
 # Create your views here.
 
 
@@ -27,6 +28,10 @@ class CategoriesView(generic.ListView):
 class CategoryView(generic.ListView):
     template_name = 'learnjapanese/category.html'
     context_object_name = 'flashcards_by_category'
+    paginate_by = 20
+
+    # default_page = 1
+    # page = request.GET.get('page', default_page)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
