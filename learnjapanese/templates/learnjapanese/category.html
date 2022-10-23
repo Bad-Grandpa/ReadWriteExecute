@@ -5,16 +5,37 @@
 {% endblock title %}
 
 {% block content %}
-You are on single category subpage!<br>
-This is category {{category.category_name}}<br>
+<h2>Category: {{category.category_name}}</h2><br>
 
 {% if flashcards_by_category %}
     <ul>
-    {% for flashcard in flashcards_by_category %}
-        English: {{flashcard.english_text}}<br>
-        Japanese: {{flashcard.japanese_text}}<br>
-        ------------------------------------------------<br>
+    {% for flashcard in page_obj %}
+        <div class="card bg-primary text-white text-center m-4 p-4" style="width:350px">
+            English: {{flashcard.english_text}}<br><br>
+            Japanese: {{flashcard.japanese_text}}
+        </div>
     {% endfor %}
+    </ul>
+
+    <ul class="pagination">
+        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+            <a class="page-link" href="?page=1">&laquo; first</a>
+        </li>
+
+        {% if page_obj.has_previous %}
+            <li class="page-item  "><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+
+        <li class="page-item active">
+            <a class="page-link" href="#">{{ page_obj.number }}</a>
+        </li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        </li>
     </ul>
 {% else %}
 There are no flashcards for this category
