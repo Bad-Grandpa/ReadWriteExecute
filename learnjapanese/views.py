@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
@@ -43,6 +42,7 @@ class CategoryView(generic.ListView):
 class LessonListView(generic.ListView):
     model = Lesson
     template_name = 'learnjapanese/lessons.html'
+    context_object_name = 'lessons'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,7 +52,8 @@ class LessonListView(generic.ListView):
 
 class LessonCreateView(generic.CreateView):
     model = Lesson
-    template_name = 'learnjapanese/todo.html'
+    template_name = 'learnjapanese/lesson_create.html'
+    fields = ['lesson_name', 'flash_cards']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
