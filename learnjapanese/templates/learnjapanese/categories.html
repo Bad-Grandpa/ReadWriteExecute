@@ -11,7 +11,7 @@
 <ul class="list-group" style="width:500px">
     {% for category in category_list %}
     <li class="list-group-item bg-light text-white text-decoration-none">
-        <a href="{% url 'learnjapanese:single_category' category.id %}">
+        <a href="{% url 'learnjapanese:category_single' category.id %}">
         {{ category.category_name }}</a></li>
     {% endfor %}
 </ul>

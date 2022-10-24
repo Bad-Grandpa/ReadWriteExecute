@@ -8,11 +8,7 @@
     {% block title %} {% endblock title %}
 </head>
 <body>
-<!--<header>-->
-<!--<a href="{% url 'learnjapanese:index' %}">Home</a> |-->
-<!--<a href="{% url 'learnjapanese:categories_list' %}">Categories</a> |-->
-<!--<a href="{% url 'learnjapanese:about' %}">About</a>-->
-<!--</header>-->
+
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -22,21 +18,19 @@
         <ul class="nav nav-pills">
             <li class="nav-item">
                 <a href="{% url 'learnjapanese:index' %}"
-                   {% if navbar == 'home' %}class="nav-link active"
-                   {% else %} class="nav-link" {% endif %}
-                >Home</a>
+                   class="nav-link {% if navbar == 'home' %}active{% endif %}">Home</a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'learnjapanese:categories_list' %}"
-                   {% if navbar == 'category' %}class="nav-link active"
-                   {% else %} class="nav-link" {% endif %}
-                >Categories</a>
+                   class="nav-link {% if navbar == 'category' %}active{% endif %}">Categories</a>
+            </li>
+            <li>
+                <a href="{% url 'learnjapanese:lessons_list' %}"
+                   class="nav-link {% if navbar == 'lesson' %}active{% endif %}">Lesson</a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'learnjapanese:about' %}"
-                   {% if navbar == 'about' %}class="nav-link active"
-                   {% else %} class="nav-link" {% endif %}
-                >About</a>
+                   class="nav-link {% if navbar == 'about' %}active{% endif %}">About</a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'admin:index' %}" class="nav-link  bg-secondary text-light">Admin</a>

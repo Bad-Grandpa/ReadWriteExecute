@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
-from .models import Category, FlashCard
+from .models import Category, FlashCard, Lesson
 
 
 # Create your views here.
@@ -13,7 +13,7 @@ def index(request):
     return render(request, 'learnjapanese/index.html', context)
 
 
-class CategoriesView(generic.ListView):
+class CategoryListView(generic.ListView):
     template_name = 'learnjapanese/categories.html'
 
     def get_queryset(self):
@@ -30,9 +30,6 @@ class CategoryView(generic.ListView):
     context_object_name = 'flashcards_by_category'
     paginate_by = 20
 
-    # default_page = 1
-    # page = request.GET.get('page', default_page)
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'category'
@@ -40,7 +37,27 @@ class CategoryView(generic.ListView):
         return context
 
     def get_queryset(self):
-        return FlashCard.objects.filter(category__pk=self.kwargs['pk'])
+        return FlashCard.objects.filter(category__pk=self.kwargs['pk']).order_by('english_text')
+
+
+class LessonListView(generic.ListView):
+    model = Lesson
+    template_name = 'learnjapanese/lessons.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
+        return context
+
+
+class LessonCreateView(generic.CreateView):
+    model = Lesson
+    template_name = 'learnjapanese/todo.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
+        return context
 
 
 class AboutView(generic.TemplateView):
@@ -50,3 +67,7 @@ class AboutView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'about'
         return context
+
+
+def todo_view(request):
+    return render(request, 'learnjapanese/todo.html', {})
