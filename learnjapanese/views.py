@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from .models import Category, FlashCard, Lesson
 
 
@@ -24,7 +25,7 @@ class CategoryListView(generic.ListView):
 class CategoryView(generic.ListView):
     template_name = 'learnjapanese/category.html'
     context_object_name = 'flashcards_by_category'
-    paginate_by = 20
+    paginate_by = 16
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
