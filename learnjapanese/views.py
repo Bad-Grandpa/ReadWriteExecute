@@ -70,6 +70,17 @@ class LessonDetailView(generic.DetailView):
         return context
 
 
+class LessonTrainView(generic.DetailView):
+    model = Lesson
+    template_name = 'learnjapanese/lesson_train.html'
+    context_object_name = "lesson"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
+        return context
+
+
 class SearchResultView(generic.ListView):
     model = FlashCard
     template_name = 'learnjapanese/search_results.html'
