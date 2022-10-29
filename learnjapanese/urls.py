@@ -12,5 +12,6 @@ urlpatterns = [
     path('lesson/<int:pk>', views.todo_view, name='lesson_single'),
     path('lesson/<int:pk>/train/', views.todo_view, name='lesson_train'),
     path('lesson/create/', views.todo_view, name='lesson_create'),
+    path('search/', views.SearchResultView.as_view(), name='flashcard_search'),
     path('about/', views.AboutView.as_view(), name='about'),
 ]
