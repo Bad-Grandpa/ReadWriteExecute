@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from .models import Category, FlashCard, Lesson
 
 
@@ -27,7 +28,7 @@ class CategoryListView(generic.ListView):
 class CategoryView(generic.ListView):
     template_name = 'learnjapanese/category.html'
     context_object_name = 'flashcards_by_category'
-    paginate_by = 20
+    paginate_by = 16
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -59,6 +60,22 @@ class LessonCreateView(generic.CreateView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
         return context
+
+
+class SearchResultView(generic.ListView):
+    model = FlashCard
+    template_name = 'learnjapanese/search_results.html'
+    context_object_name = 'search_results'
+    paginate_by = 16
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get("q")
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return FlashCard.objects.filter(Q(english_text__icontains=query) | Q(japanese_text__icontains=query))
 
 
 class AboutView(generic.TemplateView):
