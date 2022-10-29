@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -26,3 +27,6 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.lesson_name
+
+    def get_absolute_url(self):
+        return reverse('learnjapanese:lesson_single', kwargs={'pk': self.pk})

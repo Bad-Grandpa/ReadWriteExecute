@@ -4,9 +4,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, FlashCard, Lesson
 
 
-# Create your views here.
-
-
 def index(request):
     context = {'navbar': 'home'}
     return render(request, 'learnjapanese/index.html', context)
@@ -59,6 +56,33 @@ class LessonCreateView(generic.CreateView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
         return context
+
+
+class LessonDetailView(generic.DetailView):
+    model = Lesson
+    template_name = 'learnjapanese/lesson.html'
+    context_object_name = "lesson"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
+        return context
+
+
+class SearchResultView(generic.ListView):
+    model = FlashCard
+    template_name = 'learnjapanese/search_results.html'
+    context_object_name = 'search_results'
+    paginate_by = 16
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get("q")
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return FlashCard.objects.filter(Q(english_text__icontains=query) | Q(japanese_text__icontains=query))
 
 
 class AboutView(generic.TemplateView):
