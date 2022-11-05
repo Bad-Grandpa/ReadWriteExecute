@@ -106,5 +106,5 @@ class AboutView(generic.TemplateView):
         return context
 
 
-def todo_view(request):
+def todo_view(request, pk=None):
     return render(request, 'learnjapanese/todo.html', {})
