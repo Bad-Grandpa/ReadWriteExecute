@@ -5,7 +5,12 @@ from . import views
 app_name = 'learnjapanese'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('category/', views.CategoriesView.as_view(), name='categories_list'),
-    path('category/<int:pk>', views.CategoryView.as_view(), name='single_category'),
+    path('category/', views.CategoryListView.as_view(), name='categories_list'),
+    path('category/<int:pk>', views.CategoryView.as_view(), name='category_single'),
+    path('lesson/', views.LessonListView.as_view(), name='lessons_list'),
+    path('lesson/create/', views.LessonCreateView.as_view(), name='lesson_create'),
+    path('lesson/<int:pk>', views.LessonDetailView.as_view(), name='lesson_single'),
+    path('lesson/<int:pk>/train/', views.todo_view, name='lesson_train'),
+    path('search/', views.SearchResultView.as_view(), name='flashcard_search'),
     path('about/', views.AboutView.as_view(), name='about'),
 ]

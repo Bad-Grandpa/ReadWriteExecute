@@ -1,0 +1,20 @@
+{% extends "learnjapanese/base.html" %}
+
+{% block title %}
+<title> Learn japanese - Lessons </title>
+{% endblock title %}
+
+{% block content %}
+<a href="{% url 'learnjapanese:lesson_create' %}" class="btn btn-success mb-3">Create from scratch</a>
+
+{% if lessons %}
+<ul class="list-group">
+    {% for lesson in lessons %}
+    <li class="list-group-item"><a href="{% url 'learnjapanese:lesson_train' lesson.id %}">{{ lesson.lesson_name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="alert alert-info">There are no lessons right now! Maybe you should create one?</div>
+{% endif %}
+{% endblock content %}

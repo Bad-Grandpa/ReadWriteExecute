@@ -1,25 +1,25 @@
 {% extends "learnjapanese/base.html" %}
 
 {% block title %}
-<title>Category - {{category.category_name}}</title>
+<title>Searching phrase</title>
 {% endblock title %}
 
 {% block content %}
-<h2>Category: {{category.category_name}}</h2><br>
+<h2>Searching for: {{query}}</h2><br>
 
-{% if flashcards_by_category %}
+{% if search_results %}
     {% for flashcard in page_obj %}
         {% if forloop.first %}<div class="row">{% endif %}
             <div class="card col-3 bg-primary text-white text-center m-4 p-4">
                 English: {{flashcard.english_text}}<br><br>
                 Japanese: {{flashcard.japanese_text}}
             </div>
-    {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+    {% if forloop.counter|divisibleby:4 %}</div><div class="row">{% endif %}
     {% if forloop.last %}</div>{% endif %}
     {% endfor %}
 
     {% include "learnjapanese/util/pagination.html" %}
 {% else %}
-<div class="alert alert-info">There are no flashcards for this category</div>
+<div class="alert alert-info">There are no flashcards with the phrase "{{query}}" :(</div>
 {% endif %}
 {% endblock content %}
