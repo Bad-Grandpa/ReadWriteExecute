@@ -2,6 +2,7 @@
 **/__pycache__/
 
 *.pyc
+util/*
 
 import_dictionary.py
 JMdict*
