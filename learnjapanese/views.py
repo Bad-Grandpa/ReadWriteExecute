@@ -85,7 +85,7 @@ class SearchResultView(generic.ListView):
     model = FlashCard
     template_name = 'learnjapanese/search_results.html'
     context_object_name = 'search_results'
-    paginate_by = 16
+    paginate_by = 12
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
