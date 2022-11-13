@@ -1,10 +1,11 @@
+{% load learnjapanese_extras %}
 <ul class="pagination">
     <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-        <a class="page-link" href="?page=1">&laquo; first</a>
+        <a class="page-link" href="?{% change_url_params request page=1 %}">&laquo; first</a>
     </li>
 
     {% if page_obj.has_previous %}
-    <li class="page-item  "><a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+    <li class="page-item  "><a class="page-link" href="?{% change_url_params request page=page_obj.previous_page_number %}">
         {{ page_obj.previous_page_number }}</a></li>
     {% endif %}
 
@@ -13,10 +14,10 @@
     </li>
 
     {% if page_obj.has_next %}
-    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">
+    <li class="page-item"><a class="page-link" href="?{% change_url_params request page=page_obj.next_page_number %}">
         {{ page_obj.next_page_number }}</a></li>
     {% endif %}
     <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <a class="page-link" href="?{% change_url_params request page=page_obj.paginator.num_pages %}">last &raquo;</a>
     </li>
 </ul>
