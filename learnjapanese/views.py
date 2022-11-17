@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+
 from .models import Category, FlashCard, Lesson
+from .util.lesson_util import add_two_random_fcs
 
 
 def index(request):
@@ -70,15 +72,34 @@ class LessonDetailView(generic.DetailView):
         return context
 
 
-class LessonTrainView(generic.DetailView):
-    model = Lesson
+class LessonTrainView(generic.TemplateView):
     template_name = 'learnjapanese/lesson_train.html'
-    context_object_name = "lesson"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
+
+        lesson_pk = self.kwargs.get('pk')
+        lesson_obj = Lesson.objects.get(pk=lesson_pk)
+        context['lesson'] = lesson_obj
+
+        try:
+            question_number = int(self.request.GET.get("question"))
+        except TypeError:
+            question_number = None
+            return context
+
+        if question_number == 1:
+            self.request.session['question_list_pks'] = list(lesson_obj.flash_cards.all())
+            context['score'] = 0
+
+        question_pk = self.request.session['question_list_pks'][question_number - 1]
+        context['is_last'] = question_number == self.request.session['question_list_pks']
+        # pairs (is_choice_correct, flash_card)   
+        context['flash_cards'] = add_two_random_fcs(self.kwargs.get('pk'))
+        
         return context
+    
 
 
 class SearchResultView(generic.ListView):
