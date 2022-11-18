@@ -79,27 +79,32 @@ class LessonTrainView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
 
-        lesson_pk = self.kwargs.get('pk')
-        lesson_obj = Lesson.objects.get(pk=lesson_pk)
-        context['lesson'] = lesson_obj
-
         try:
-            question_number = int(self.request.GET.get("question"))
+            context['question_no'] = int(self.request.GET.get("question"))
         except TypeError:
-            question_number = None
+            context['question_no'] = None
             return context
 
-        if question_number == 1:
-            self.request.session['question_list_pks'] = list(lesson_obj.flash_cards.all())
+        if context['question_no'] == 1:
             context['score'] = 0
 
-        question_pk = self.request.session['question_list_pks'][question_number - 1]
-        context['is_last'] = question_number == self.request.session['question_list_pks']
-        # pairs (is_choice_correct, flash_card)   
-        context['flash_cards'] = add_two_random_fcs(self.kwargs.get('pk'))
-        
+        lesson_pk = self.kwargs.get('pk')
+        lesson_obj = Lesson.objects.get(pk=lesson_pk)
+        question_list = list(lesson_obj.flash_cards.all())
+
+        context['lesson'] = lesson_obj
+        context['question'] = question_list[context['question_no'] - 1]
+        context['answers'] = add_two_random_fcs(context['question'].id)
+        context['is_last'] = context['question_no'] == len(question_list)
+ 
         return context
     
+
+
+class LessonTrainResultsView(generic.TemplateView):
+    template_name = 'learnjapanese/lesson_train_results.html'
+
+
 
 
 class SearchResultView(generic.ListView):

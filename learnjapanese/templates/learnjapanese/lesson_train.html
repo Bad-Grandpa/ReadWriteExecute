@@ -6,6 +6,28 @@
 
 {% block content %}
 You are training lesson {{lesson.lesson_name}}.<br>
-
+Question number {{question_no}}
+{% comment %} Question section {% endcomment %}
+<div class="d-flex justify-content-center">
+    <div class="card col-3 bg-primary text-white text-center m-4 p-4">
+        English: {{question.english_text}}<br><br>
+        Japanese: {{question.japanese_text}}
+    </div>
+</div>
+{% comment %} Answer section {% endcomment %}
+{% for answer in answers %}
+    {% if forloop.first %}<div class="d-flex justify-content-center">{% endif %}
+    <a class="card col-3 bg-primary text-white text-center m-4 p-4"
+        {% if answer.id == question.id %}
+            href="{% url 'learnjapanese:lesson_train' pk=lesson.id %}?question={{request.GET.question|add:1}}"
+        {% else %}
+            href="{% url 'learnjapanese:lesson_train' pk=lesson.id %}?question={{request.GET.question|add:1}}"
+        {% endif %}>
+        English: {{answer.english_text}}<br><br>
+        Japanese: {{answer.japanese_text}}
+    </a>
+    {% if forloop.last %}</div>{% endif %}
+{% endfor %}
+<br>
 {% debug %}
 {% endblock content %}

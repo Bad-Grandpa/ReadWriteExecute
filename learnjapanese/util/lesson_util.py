@@ -10,15 +10,15 @@ def add_two_random_fcs(include_pk):
 
     Returns pair list of three tuples (is_choice_correct, flash_card)
     '''
-    pks = FlashCard.objects.values_list('pk', flat=True)
+    pks = list(FlashCard.objects.values_list('pk', flat=True))
     random_pks = sample(pks, 3)
     random_objects = []
 
     if not include_pk in random_pks:
         random_pks[choice(range(3))] = include_pk
 
-    for pk in random_pks:
-        random_objects.append((pk == include_pk, FlashCard.objects.get(pk)))
+    for rand_pk in random_pks:
+        random_objects.append(FlashCard.objects.get(pk=rand_pk))
 
     return random_objects
 
