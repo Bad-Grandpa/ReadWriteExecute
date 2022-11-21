@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.views import generic
+from django.views import generic, View
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.db.models import Q
 
 from .models import Category, FlashCard, Lesson
@@ -79,32 +80,66 @@ class LessonTrainView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
 
-        try:
-            context['question_no'] = int(self.request.GET.get("question"))
-        except TypeError:
-            context['question_no'] = None
-            return context
-
-        if context['question_no'] == 1:
-            context['score'] = 0
-
-        lesson_pk = self.kwargs.get('pk')
-        lesson_obj = Lesson.objects.get(pk=lesson_pk)
-        question_list = list(lesson_obj.flash_cards.all())
-
-        context['lesson'] = lesson_obj
-        context['question'] = question_list[context['question_no'] - 1]
-        context['answers'] = add_two_random_fcs(context['question'].id)
-        context['is_last'] = context['question_no'] == len(question_list)
+        context['lesson'] = Lesson.objects.get(pk=self.kwargs.get('pk'))
+        question_pk = self.request.session.get('training_question_list')[self.kwargs.get['question']]
+        context['question'] = FlashCard.objects.get(pk=question_pk)
+        context['answers'] = [FlashCard.objects.get(pk=answer_pk)
+            for answer_pk in self.request.session['training_answer_list'][context['question']]]
  
         return context
     
+
+class LessonTrainStartView(View):
+    def get(self, request, *args, **kwargs):
+        '''
+        Initiate training parameters in session. That includes:
+        - current training id
+        - last question number (0 in start view)
+        - question FlashCards pks list
+        - answer FlashCards pks list (list of tuples)
+        - current score
+        '''
+        lesson_obj = Lesson.objects.get(kwargs.get('pk'))
+        request.session['training_id'] = kwargs.get('pk')
+        request.session['training_last_question'] = 0
+        
+        question_list =[flashcard.id for flashcard in lesson_obj.flash_cards.all()]
+        request.session['training_question_list'] = question_list
+        request.session['training_answer_list'] = [add_two_random_fcs(pk) for pk in question_list]
+        request.session['training_score'] = 0
+
+        first_question_kwargs = {
+            'pk': request.session['training_id'],
+            'question': request.session['training_last_question'] + 1,
+        }
+        return reverse('learnjapanese:train', kwargs=first_question_kwargs)
+
+
+class LessonTrainSubmitAnswer(View):
+    def get(self, request, *args, **kwargs):
+        # TODO update score
+        # TODO if last, redirect to results
+        # TODO otherwise, redirect to the next question
+        return HttpResponse("Submited answer")
 
 
 class LessonTrainResultsView(generic.TemplateView):
     template_name = 'learnjapanese/lesson_train_results.html'
 
+    def __clear_session(self):
+        del self.request.session['training_id']
+        del self.request.session['training_last_question']
+        del self.request.session['training_question_list']
+        del self.request.session['training_answer_list']
+        del self.request.session['training_score']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['score'] = self.request.session['training_score']
+        context['lesson'] = Lesson.objects.get(pk = self.kwargs.get('pk'))
+
+        self.__clear_session()
+        return context
 
 
 class SearchResultView(generic.ListView):

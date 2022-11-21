@@ -10,8 +10,10 @@ urlpatterns = [
     path('lesson/', views.LessonListView.as_view(), name='lessons_list'),
     path('lesson/create/', views.LessonCreateView.as_view(), name='lesson_create'),
     path('lesson/<int:pk>', views.LessonDetailView.as_view(), name='lesson_single'),
-    path('lesson/<int:pk>/train/', views.LessonTrainView.as_view(), name='lesson_train'),
-    path('lesson/<int:pk>/train/result', views.todo_view, name='lesson_train_result'),
+    path('lesson/<int:pk>/train/', views.LessonTrainStartView.as_view(), name='lesson_train_start'),
+    path('lesson/<int:pk>/train/<int:question>', views.LessonTrainView.as_view(), name='train'),
+    path('lesson/<int:pk>/train/<int:question>/submit/<int:answer>', views.todo_view, name='lesson_train_submit'),
+    path('lesson/<int:pk>/train/result', views.todo_view, name='train_result'),
     path('search/', views.SearchResultView.as_view(), name='flashcard_search'),
     path('about/', views.AboutView.as_view(), name='about'),
 ]

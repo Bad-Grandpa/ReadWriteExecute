@@ -18,11 +18,7 @@ Question number {{question_no}}
 {% for answer in answers %}
     {% if forloop.first %}<div class="d-flex justify-content-center">{% endif %}
     <a class="card col-3 bg-primary text-white text-center m-4 p-4"
-        {% if answer.id == question.id %}
-            href="{% url 'learnjapanese:lesson_train' pk=lesson.id %}?question={{request.GET.question|add:1}}"
-        {% else %}
-            href="{% url 'learnjapanese:lesson_train' pk=lesson.id %}?question={{request.GET.question|add:1}}"
-        {% endif %}>
+        href="{% url 'learnjapanese:lesson_train' pk=lesson.id question=question.id answer=forloop.counter0%}">
         English: {{answer.english_text}}<br><br>
         Japanese: {{answer.japanese_text}}
     </a>
