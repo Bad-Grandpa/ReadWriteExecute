@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views import generic, View
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db.models import Q
 
@@ -81,8 +81,9 @@ class LessonTrainView(generic.TemplateView):
         context['navbar'] = 'lesson'
 
         context['lesson'] = Lesson.objects.get(pk=self.kwargs.get('pk'))
-        question_pk = self.request.session.get('training_question_list')[self.kwargs.get['question']]
-        context['question'] = FlashCard.objects.get(pk=question_pk)
+        question_pk_list = self.request.session.get('training_question_list')
+        question_pk = question_pk_list[self.kwargs.get('question')]
+        context['question_obj'] = FlashCard.objects.get(pk=question_pk)
         context['answers'] = [FlashCard.objects.get(pk=answer_pk)
             for answer_pk in self.request.session['training_answer_list'][context['question']]]
  
@@ -99,7 +100,7 @@ class LessonTrainStartView(View):
         - answer FlashCards pks list (list of tuples)
         - current score
         '''
-        lesson_obj = Lesson.objects.get(kwargs.get('pk'))
+        lesson_obj = Lesson.objects.get(pk=kwargs.get('pk'))
         request.session['training_id'] = kwargs.get('pk')
         request.session['training_last_question'] = 0
         
@@ -112,7 +113,7 @@ class LessonTrainStartView(View):
             'pk': request.session['training_id'],
             'question': request.session['training_last_question'] + 1,
         }
-        return reverse('learnjapanese:train', kwargs=first_question_kwargs)
+        return redirect(reverse('learnjapanese:train', kwargs=first_question_kwargs))
 
 
 class LessonTrainSubmitAnswer(View):
