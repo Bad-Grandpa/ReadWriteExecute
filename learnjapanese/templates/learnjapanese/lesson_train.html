@@ -5,25 +5,25 @@
 {% endblock title %}
 
 {% block content %}
-You are training lesson {{lesson.lesson_name}}.<br>
-Question number {{question_no}}
+<h1>You are training lesson {{lesson.lesson_name}}<h1>
+<h2>Question number {{question}}</h2>
 {% comment %} Question section {% endcomment %}
 <div class="d-flex justify-content-center">
     <div class="card col-3 bg-primary text-white text-center m-4 p-4">
-        English: {{question.english_text}}<br><br>
-        Japanese: {{question.japanese_text}}
+        <h3>English: {{question_obj.english_text}}</h3>
+        {% comment %} Japanese: {{question_obj.japanese_text}} {% endcomment %}
     </div>
 </div>
 {% comment %} Answer section {% endcomment %}
+<h3>Choose the japanese translation!</h3>
 {% for answer in answers %}
     {% if forloop.first %}<div class="d-flex justify-content-center">{% endif %}
-    <a class="card col-3 bg-primary text-white text-center m-4 p-4"
-        href="{% url 'learnjapanese:lesson_train_submit' lesson.id question_obj.id forloop.counter0%}">
-        English: {{answer.english_text}}<br><br>
-        Japanese: {{answer.japanese_text}}
+    <a class="card col-3 bg-primary text-white text-center m-4 p-4 text-decoration-none"
+        href="{% url 'learnjapanese:lesson_tr_submit' lesson.id question forloop.counter0%}">
+        {% comment %} English: {{answer.english_text}}<br><br>
+        Japanese:  {% endcomment %}<h4>{{answer.japanese_text}}</h4>
     </a>
     {% if forloop.last %}</div>{% endif %}
 {% endfor %}
 <br>
-{% debug %}
 {% endblock content %}

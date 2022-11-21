@@ -10,7 +10,7 @@
 {% if lessons %}
 <ul class="list-group">
     {% for lesson in lessons %}
-    <li class="list-group-item"><a href="{% url 'learnjapanese:lesson_train_start' lesson.id %}">{{ lesson.lesson_name }}</a>
+    <li class="list-group-item"><a href="{% url 'learnjapanese:lesson_tr_start' lesson.id %}">{{ lesson.lesson_name }}</a>
     </li>
     {% endfor %}
 </ul>

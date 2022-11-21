@@ -73,7 +73,7 @@ class LessonDetailView(generic.DetailView):
         return context
 
 
-class LessonTrainView(generic.TemplateView):
+class TrainLessonView(generic.TemplateView):
     template_name = 'learnjapanese/lesson_train.html'
 
     def get_context_data(self, **kwargs):
@@ -81,16 +81,17 @@ class LessonTrainView(generic.TemplateView):
         context['navbar'] = 'lesson'
 
         context['lesson'] = Lesson.objects.get(pk=self.kwargs.get('pk'))
+        question_no = context['question'] - 1
         question_pk_list = self.request.session.get('training_question_list')
-        question_pk = question_pk_list[self.kwargs.get('question')]
+        question_pk = question_pk_list[question_no]
         context['question_obj'] = FlashCard.objects.get(pk=question_pk)
         context['answers'] = [FlashCard.objects.get(pk=answer_pk)
-            for answer_pk in self.request.session['training_answer_list'][context['question']]]
+            for answer_pk in self.request.session['training_answer_list'][question_no]]
  
         return context
     
 
-class LessonTrainStartView(View):
+class TrainLessonStartView(View):
     def get(self, request, *args, **kwargs):
         '''
         Initiate training parameters in session. That includes:
@@ -109,22 +110,48 @@ class LessonTrainStartView(View):
         request.session['training_answer_list'] = [add_two_random_fcs(pk) for pk in question_list]
         request.session['training_score'] = 0
 
-        first_question_kwargs = {
+        url_params = {
             'pk': request.session['training_id'],
             'question': request.session['training_last_question'] + 1,
         }
-        return redirect(reverse('learnjapanese:train', kwargs=first_question_kwargs))
+        return redirect(reverse('learnjapanese:lesson_tr', kwargs=url_params))
 
 
-class LessonTrainSubmitAnswer(View):
+class TrainLessonSubmitAnswer(View):
     def get(self, request, *args, **kwargs):
-        # TODO update score
-        # TODO if last, redirect to results
-        # TODO otherwise, redirect to the next question
-        return HttpResponse("Submited answer")
+        lesson_pk = kwargs.get('pk')
+        answer_no = kwargs.get('answer')
+        question_no = kwargs.get('question')
+
+        # check if submit is legitimate
+        if (request.session.get('training_last_question') + 1) != question_no or \
+            request.session.get('training_id') != lesson_pk:
+            # TODO redirect to cheat view
+            pass
+
+        # update score
+        question_list = request.session['training_question_list']
+        answer_list = request.session['training_answer_list']
+
+        if question_list[question_no - 1] == answer_list[question_no - 1][answer_no]:
+            request.session['training_score'] += 1
+        
+        # if last, redirect to results
+        if question_no == len(question_list):
+            url_params = {'pk': lesson_pk}
+            return redirect(reverse('learnjapanese:lesson_tr_result', kwargs=url_params))
+        
+        # otherwise, redirect to the next question
+        question_no += 1
+        request.session['training_last_question'] = question_no
+        url_params = {
+            'pk': lesson_pk,
+            'question': question_no
+        }
+        return redirect(reverse('learnjapanese:lesson_tr', kwargs=url_params))
 
 
-class LessonTrainResultsView(generic.TemplateView):
+class TrainLessonResultsView(generic.TemplateView):
     template_name = 'learnjapanese/lesson_train_results.html'
 
     def __clear_session(self):
@@ -136,12 +163,20 @@ class LessonTrainResultsView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
         context['score'] = self.request.session['training_score']
-        context['lesson'] = Lesson.objects.get(pk = self.kwargs.get('pk'))
+        context['lesson'] = Lesson.objects.get(pk=self.kwargs.get('pk'))
+        context['lesson_len'] = len(self.request.session['training_question_list'])
 
-        self.__clear_session()
+        # self.__clear_session()
         return context
 
+class TrainLessonFailView(generic.TemplateView):
+    template_name = 'learnjapanese/lesson_fail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        return context
 
 class SearchResultView(generic.ListView):
     model = FlashCard
@@ -151,6 +186,7 @@ class SearchResultView(generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['navbar'] = 'lesson'
         context['query'] = self.request.GET.get("q")
         return context
 
