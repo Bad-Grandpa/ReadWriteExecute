@@ -1,7 +1,7 @@
 # ReadWriteExecute
 ReadWriteExecuteApp
 
-Simple django app with a simple purpose of learning a japanese language. It will contain a dictionary with a search option where you can find english-japanese translation written in hiragana/katakana (and optional kanji where applies).
+Simple django app with a simple purpose of learning a japanese language. It will contain a dictionary with a search option where you can find english-japanese translation written in hiragana/katakana (and optional kanji where it applies).
 
 ## Requirements
 
@@ -16,6 +16,8 @@ and after activating it with the proper script (many IDEs do that automatically 
 ```
 pip install -r requirements.txt
 ```
+
+and you're good to go.
 
 ## Dictionary database creation
 
