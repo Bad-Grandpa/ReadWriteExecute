@@ -43,9 +43,11 @@
             </li>
             <li>
                 <a href="{% url 'logout' %}" class="nav-link  bg-secondary text-light">Log Out</a>
-            </li>
             {% else %}
                 <a href="{% url 'login' %}" class="nav-link  bg-success text-light">Log In</a>
+            </li>
+            <li class="nav-item m-1">
+                <a href="{% url 'accounts:signup' %}" class="nav-link  bg-warning text-light">Sign Up</a>
             {% endif %}
             </li><br>
             <li class="nav-item m-1">
