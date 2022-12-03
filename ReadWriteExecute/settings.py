@@ -126,4 +126,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Parameters required for user accounts handling
 LOGIN_REDIRECT_URL = 'learnjapanese:index'
-LOGOUT_REDICECT_URL = 'learnjapanese:index'
+LOGOUT_REDIRECT_URL = 'learnjapanese:index'
