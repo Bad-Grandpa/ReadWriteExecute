@@ -1,10 +1,18 @@
-from django.test import TestCase
-from .models import FlashCard, Lesson, Category
 import datetime
+from django.contrib.auth.models import AnonymousUser, User
+from django.test import TestCase, Client
 from django.utils import timezone
+from django.urls import reverse
+from .models import *
+from .views import *
+
 
 class LearnTestCase(TestCase):
     def setUp(self):
+        self.kwargs = {'pk':1}
+        self.kwargs_pk_question = {'pk':1, 'question':1}
+        self.kwargs_pk_question_answer = {'pk':1, 'question':1, 'answer':1}
+        self.client = Client()
         animals = Category.objects.create(category_name="Animals")
         vehicles = Category.objects.create(category_name="Vehicles")
         dog = FlashCard.objects.create(english_text="dog", japanese_text="inu", category=animals)
@@ -52,5 +60,58 @@ class LearnTestCase(TestCase):
         #Checking if Category was created according to setUp
         self.assertEqual(animals_category.category_name, category_as_string)
         self.assertNotEqual(animals_category.category_name, vehicles_category.category_name)
-    
 
+    def test_about_view_response(self):
+        response = self.client.get(reverse("learnjapanese:about"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_list_view_response(self):
+        response = self.client.get(reverse("learnjapanese:lessons_list"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_create_view_response(self):
+        response = self.client.get(reverse("learnjapanese:lesson_create"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_single_view_response(self):
+        response = self.client.get(reverse("learnjapanese:lesson_single", kwargs=self.kwargs))
+        self.assertEqual(response.status_code, 200)
+
+    def test_category_view_response(self):
+        response = self.client.get(reverse("learnjapanese:categories_list"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_category_single_view_response(self):
+        response = self.client.get(reverse("learnjapanese:category_single", kwargs=self.kwargs))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lessson_train_start_view_response(self):
+        response = self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        #since it is a redirect we expect a 302
+        self.assertEqual(response.status_code, 302)
+
+    def test_lessson_train_view_response(self):
+        #we run a page to create session for training
+        self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        response = self.client.get(reverse("learnjapanese:lesson_tr", kwargs=self.kwargs_pk_question))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_train_submit(self):
+        #again we are being redirected to next question
+        self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        self.client.get(reverse("learnjapanese:lesson_tr", kwargs=self.kwargs_pk_question))
+        response = self.client.get(reverse("learnjapanese:lesson_tr_submit", kwargs=self.kwargs_pk_question_answer))
+        self.assertEqual(response.status_code, 302)
+
+    def test_lesson_train_result_view(self):
+        session = self.client.session
+        session['training_id'] = 1
+        session['training_last_question'] = 3
+        session['training_question_list'] = [_ for _ in range(3)]
+        session['training_answer_list'] = [_ for _ in range(3)]
+        session['training_score'] = 3
+        session.save()
+        response = self.client.get(reverse("learnjapanese:lesson_tr_result", kwargs=self.kwargs))
+        self.assertEqual(response.status_code, 200)
+        # example of assertContains
+        self.assertContains(response, "3 out of 3")
