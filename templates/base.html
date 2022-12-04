@@ -16,31 +16,48 @@
         </a>
 
         <ul class="nav nav-pills mx-2">
-            <li class="nav-item">
+            <li class="nav-item m-1">
                 <a href="{% url 'learnjapanese:index' %}"
                    class="nav-link {% if navbar == 'home' %}active{% endif %}">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item m-1">
                 <a href="{% url 'learnjapanese:categories_list' %}"
                    class="nav-link {% if navbar == 'category' %}active{% endif %}">Categories</a>
             </li>
-            <li>
+            <li class="nav-item m-1">
                 <a href="{% url 'learnjapanese:lessons_list' %}"
                    class="nav-link {% if navbar == 'lesson' %}active{% endif %}">Lesson</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item m-1">
                 <a href="{% url 'learnjapanese:about' %}"
                    class="nav-link {% if navbar == 'about' %}active{% endif %}">About</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item m-1">
                 <a href="{% url 'admin:index' %}" class="nav-link  bg-secondary text-light">Admin</a>
             </li>
+
+            <li class="nav-item m-1">
+            {% if user.is_authenticated %}
+                <p class="nav-link align-middle fw-bold">Hi, {{ user.username }}</p>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="nav-link  bg-secondary text-light">Log Out</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link  bg-success text-light">Log In</a>
+            </li>
+            <li class="nav-item m-1">
+                <a href="{% url 'accounts:signup' %}" class="nav-link  bg-warning text-light">Sign Up</a>
+            {% endif %}
+            </li><br>
+            <li class="nav-item m-1">
+                <form class="form-inline d-flex" action="{% url 'learnjapanese:flashcard_search' %}">
+                    <input class="form-control mx-2" type="search" placeholder="Search a word" aria-label="Search" name="q">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </li>
         </ul>
-        <form class="form-inline d-flex" action="{% url 'learnjapanese:flashcard_search' %}">
-            <input class="form-control mx-2" type="search" placeholder="Search a word" aria-label="Search" name="q">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
     </header>
 </div>
 <div class="container">
