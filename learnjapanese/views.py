@@ -70,6 +70,7 @@ class LessonDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['navbar'] = 'lesson'
+        context['flashcards'] = self.get_object().flash_cards.all()
         return context
 
 
