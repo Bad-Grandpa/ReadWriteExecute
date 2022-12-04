@@ -84,3 +84,32 @@ class LearnTestCase(TestCase):
     def test_category_single_view_response(self):
         response = self.client.get(reverse("learnjapanese:category_single", kwargs=self.kwargs))
         self.assertEqual(response.status_code, 200)
+
+    def test_lessson_train_start_view_response(self):
+        response = self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        #since it is a redirect we expect a 302
+        self.assertEqual(response.status_code, 302)
+
+    def test_lessson_train_view_response(self):
+        #we run a page to create session for training
+        self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        response = self.client.get(reverse("learnjapanese:lesson_tr", kwargs=self.kwargs_pk_question))
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_train_submit(self):
+        #again we are being redirected to next question
+        self.client.get(reverse("learnjapanese:lesson_tr_start", kwargs=self.kwargs))
+        self.client.get(reverse("learnjapanese:lesson_tr", kwargs=self.kwargs_pk_question))
+        response = self.client.get(reverse("learnjapanese:lesson_tr_submit", kwargs=self.kwargs_pk_question_answer))
+        self.assertEqual(response.status_code, 302)
+
+    def test_lesson_train_result_view(self):
+        session = self.client.session
+        session['training_id'] = 1
+        session['training_last_question'] = 3
+        session['training_question_list'] = [_ for _ in range(3)]
+        session['training_answer_list'] = [_ for _ in range(3)]
+        session['training_score'] = 3
+        session.save()
+        response = self.client.get(reverse("learnjapanese:lesson_tr_result", kwargs=self.kwargs))
+        self.assertEqual(response.status_code, 200)
