@@ -1,10 +1,18 @@
-from django.test import TestCase
-from .models import FlashCard, Lesson, Category
 import datetime
+from django.contrib.auth.models import AnonymousUser, User
+from django.test import TestCase, RequestFactory
 from django.utils import timezone
+from django.urls import reverse
+from .models import *
+from .views import *
+
 
 class LearnTestCase(TestCase):
     def setUp(self):
+        self.kwargs = {'pk':1}
+        self.kwargs_pk_question = {'pk':1, 'question':1}
+        self.kwargs_pk_question_answer = {'pk':1, 'question':1, 'answer':1}
+        self.factory = RequestFactory()
         animals = Category.objects.create(category_name="Animals")
         vehicles = Category.objects.create(category_name="Vehicles")
         dog = FlashCard.objects.create(english_text="dog", japanese_text="inu", category=animals)
@@ -52,5 +60,39 @@ class LearnTestCase(TestCase):
         #Checking if Category was created according to setUp
         self.assertEqual(animals_category.category_name, category_as_string)
         self.assertNotEqual(animals_category.category_name, vehicles_category.category_name)
-    
 
+    def test_about_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:about"))
+        request.user = AnonymousUser()
+        response = AboutView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_list_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:lessons_list"))
+        request.user = AnonymousUser()
+        response = LessonListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_create_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:lesson_create"))
+        request.user = AnonymousUser()
+        response = LessonCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_single_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:lesson_single", kwargs=self.kwargs))
+        request.user = AnonymousUser()
+        response = LessonDetailView.as_view()(request, **self.kwargs)
+        self.assertEqual(response.status_code, 200)
+
+    def test_category_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:categories_list"))
+        request.user = AnonymousUser()
+        response = CategoryListView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_category_single_view_response(self):
+        request = self.factory.get(reverse("learnjapanese:category_single", kwargs=self.kwargs))
+        request.user = AnonymousUser()
+        response = CategoryView.as_view()(request, **self.kwargs)
+        self.assertEqual(response.status_code, 200)
