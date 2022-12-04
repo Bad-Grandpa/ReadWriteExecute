@@ -8,9 +8,18 @@
 <a href="{% url 'learnjapanese:lesson_create' %}" class="btn btn-success mb-3">Create from scratch</a>
 
 {% if lessons %}
-<ul class="list-group">
+<ul class="list-group col-7">
     {% for lesson in lessons %}
-    <li class="list-group-item"><a href="{% url 'learnjapanese:lesson_tr_start' lesson.id %}">{{ lesson.lesson_name }}</a>
+    <li class="list-group-item {% cycle 'bg-white' 'bg-light' %}">
+        <div class="d-flex justify-content-between">
+            <div class="h-100 col-8 align-self-center">
+               {{ lesson.lesson_name }}
+            </div>
+            <div id="buttons" class="">
+                <a href="{% url 'learnjapanese:lesson_single' lesson.id %}" class="btn btn-primary">View</a>
+                <a href="{% url 'learnjapanese:lesson_tr_start' lesson.id %}" class="btn btn-warning">Challenge</a>
+            </div>
+        </div>
     </li>
     {% endfor %}
 </ul>
