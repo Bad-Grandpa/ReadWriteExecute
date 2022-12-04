@@ -113,3 +113,5 @@ class LearnTestCase(TestCase):
         session.save()
         response = self.client.get(reverse("learnjapanese:lesson_tr_result", kwargs=self.kwargs))
         self.assertEqual(response.status_code, 200)
+        # example of assertContains
+        self.assertContains(response, "3 out of 3")
