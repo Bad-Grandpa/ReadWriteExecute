@@ -13,6 +13,9 @@
             <div class="card col-3 bg-primary text-white text-center m-4 p-4">
                 English: {{flashcard.english_text}}<br><br>
                 Japanese: {{flashcard.japanese_text}}
+                {% if flashcard.japanese_text_kanji %}
+                <br>Japanese(kanji): {{flashcard.japanese_text_kanji}}
+                {% endif %}
             </div>
         {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
         {% if forloop.last %}</div>{% endif %}

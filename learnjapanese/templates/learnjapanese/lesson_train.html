@@ -21,7 +21,11 @@
     <a class="card col-3 bg-primary text-white text-center m-4 p-4 text-decoration-none"
         href="{% url 'learnjapanese:lesson_tr_submit' lesson.id question forloop.counter0%}">
         {% comment %} English: {{answer.english_text}}<br><br>
-        Japanese:  {% endcomment %}<h4>{{answer.japanese_text}}</h4>
+        Japanese:  {% endcomment %}
+        <h4>{{answer.japanese_text}}
+            {% if answer.japanese_text_kanji %}<br>({{answer.japanese_text_kanji}}){% endif %}
+        </h4>
+        
     </a>
     {% if forloop.last %}</div>{% endif %}
 {% endfor %}

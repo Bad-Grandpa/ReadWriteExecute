@@ -49,6 +49,7 @@ class Command(BaseCommand):
                     fc = FlashCard(
                         english_text=entry["gloss"],
                         japanese_text=entry["reb"],
+                        japanese_text_kanji = entry.get("keb"),
                         category=target_category
                         )
                     

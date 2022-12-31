@@ -125,5 +125,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Parameters required for user accounts handling
+AUTH_USER_MODEL = 'accounts.LJUser'
 LOGIN_REDIRECT_URL = 'learnjapanese:index'
 LOGOUT_REDIRECT_URL = 'learnjapanese:index'
