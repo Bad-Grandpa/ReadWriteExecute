@@ -1,29 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block head %}<link href="{% static 'css/login.css' %}" rel="stylesheet">{% endblock head %}
 {% block title %}<title>Sign in to your account</title>{% endblock title %}
+{% block head %}<link href="{% static 'css/login.css' %}" rel="stylesheet">{% endblock head %}
 
 {% block content %}
 <h2>Log In</h2>
-<form method="post">{% csrf_token %}
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+<div class="form-signin text-center my-5">
+    <form method="post">{% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    {% for field in form  %}
-        <div class="form-floating">
-            {{ field }}
-            {{ field.label_tag }}
-        </div>
-    {% endfor %}
+        {% for field in form  %}
+            <div class="form-floating">
+                {{ field }}
+                {{ field.label_tag }}
+            </div>
+        {% endfor %}
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    {% if form.non_field_errors %}
-        <h4>Whoops, something went wrong</h4>
-        <ul class='form-errors'>
-            {% for error in form.non_field_errors %}
-                <li class="text-danger">{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</form>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        {% if form.non_field_errors %}
+            <h4>Whoops, something went wrong</h4>
+            <ul class='form-errors'>
+                {% for error in form.non_field_errors %}
+                    <li class="text-danger">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </form>
+</div>
 {% endblock content %}
